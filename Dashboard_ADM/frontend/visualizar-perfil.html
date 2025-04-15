@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lista de Colaboradores</title>
+  <style>
+    .card-colaborador {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: center;
+      width: 200px;
+      margin: 10px;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .card-img {
+      width: 100px;
+      border-radius: 50%;
+    }
+
+    .zap-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #25d366;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .cards-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Colaboradores Cadastrados</h1>
+
+  <div id="colaboradores-container" class="cards-wrapper">
+    <!-- Cards gerados via JS -->
+  </div>
+
+  <script>
+    fetch("http://localhost:4000/api/colaboradores")
+      .then(res => res.json())
+      .then(colaboradores => {
+        const container = document.getElementById("colaboradores-container");
+
+        if (colaboradores.length === 0) {
+          container.innerHTML = `
+            <p style="text-align: center; width: 100%;">
+              Nenhum colaborador encontrado.
+            </p>
+          `;
+          return;
+        }
+
+        container.innerHTML = colaboradores.map(c => {
+          const avatar = c.foto || 'https://i.pravatar.cc/100';
+          const numeroLimpo = (c.numero_contato || '').replace(/\D/g, '');
+          const whatsapp = numeroLimpo ? `https://wa.me/55${numeroLimpo}` : '#';
+
+          return `
+            <div class="card-colaborador" onclick="window.location.href='edicao_colaborador.html?id=${c.id}'">
+              <img src="${avatar}" alt="Foto de ${c.primeiro_nome}" class="card-img" />
+              <h3>${c.primeiro_nome} ${c.ultimo_nome}</h3>
+              <a href="${whatsapp}" target="_blank" class="zap-btn" onclick="event.stopPropagation()">WhatsApp</a>
+            </div>
+          `;
+        }).join('');
+      })
+      .catch(error => {
+        console.error("Erro ao buscar colaboradores:", error);
+        document.getElementById("colaboradores-container").innerHTML = `
+          <p style="text-align: center; width: 100%; color: red;">
+            Erro ao carregar colaboradores.
+          </p>
+        `;
+      });
+  </script>
+
+</body>
+</html>

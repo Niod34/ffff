@@ -1,0 +1,128 @@
+:root {
+    --numDias: 6;
+    --numHoras: 14;
+    --alturaHora: 60px;
+    --corFundoCalendario: #fff1f8;
+    --corBordaEvento: #f2d3d8;
+    --corEvento1: #ffd6d1;
+    --corEvento2: #fafaa3;
+    --corEvento3: #e2f8ff;
+    --corEvento4: #d1ffe6;
+  }
+ 
+  .calendario {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto 1fr;
+    margin: 2rem;
+  }
+ 
+  .linha-do-tempo {
+    display: grid;
+    grid-template-rows: repeat(var(--numHoras), var(--alturaHora));
+  }
+ 
+  .dias {
+    display: grid;
+    grid-column: 2;
+    gap: 5px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+ 
+  .eventos {
+    display: grid;
+    grid-template-rows: repeat(var(--numHoras), var(--alturaHora));
+    border-radius: 5px;
+    background: var(--corFundoCalendario);
+  }
+ 
+  .inicio-10 {
+    grid-row-start: 1;
+  }
+ 
+  .inicio-12 {
+    grid-row-start: 4;
+  }
+ 
+  .inicio-1 {
+    grid-row-start: 12;
+  }
+ 
+  .inicio-2 {
+    grid-row-start: 6;
+  }
+ 
+  .fim-12 {
+    grid-row-end: 4;
+  }
+ 
+  .fim-1 {
+    grid-row-end: 5;
+  }
+ 
+  .fim-3 {
+    grid-row-end: 7;
+  }
+ 
+  .fim-4 {
+    grid-row-end: 15;
+  }
+ 
+  .fim-5 {
+    grid-row-end: 9;
+  }
+ 
+  .titulo {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+ 
+  .evento {
+    border: 1px solid var(--corBordaEvento);
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    background: white;
+  }
+ 
+  .espacador,
+  .data {
+    height: 60px;
+  }
+
+  body {
+    font-family: system-ui, sans-serif;
+  }
+ 
+  .desenvolvimento-sistema {
+    background: var(--corEvento1);
+  }
+ 
+  .teste-sistema {
+    background: var(--corEvento2);
+  }
+ 
+  .manutencao {
+    background: var(--corEvento3);
+  }
+ 
+  .implementacao {
+    background: var(--corEvento4);
+  }
+ 
+  .data {
+    display: flex;
+    gap: 1em;
+  }
+ 
+  .numero-data {
+    font-size: 2rem;
+    font-weight: 600;
+    display: inline;
+  }
+ 
+  .dia-da-semana {
+    display: inline;
+    font-size: 1.5rem;
+    font-weight: 100;
+  }

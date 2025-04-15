@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edição de Colaborador</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    form {
+      max-width: 500px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Editar Colaborador</h1>
+
+  <form id="form-edicao">
+    <input type="hidden" id="id" />
+
+    <label for="primeiro_nome">Primeiro Nome:</label>
+    <input type="text" id="primeiro_nome" name="primeiro_nome" required />
+
+    <label for="ultimo_nome">Último Nome:</label>
+    <input type="text" id="ultimo_nome" name="ultimo_nome" required />
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" required />
+
+    <label for="numero_contato">Número de Contato:</label>
+    <input type="text" id="numero_contato" name="numero_contato" />
+
+    <label for="nome_usuario">Usuário:</label>
+    <input type="text" id="nome_usuario" name="nome_usuario" />
+
+    <label for="senha">Senha:</label>
+    <input type="text" id="senha" name="senha" />
+
+    <label for="foto">URL da Foto:</label>
+    <input type="text" id="foto" name="foto" />
+
+    <button type="submit">Salvar Alterações</button>
+  </form>
+
+  <script>
+    // Função para pegar ID da URL
+    function getIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id');
+    }
+
+    async function carregarDados() {
+      const id = getIdFromUrl();
+      if (!id) return alert("ID do colaborador não encontrado na URL.");
+
+      try {
+        const res = await fetch(`http://localhost:4000/api/colaboradores/${id}`);
+        const colaborador = await res.json();
+
+        // Preencher campos
+        document.getElementById('id').value = colaborador.id;
+        document.getElementById('primeiro_nome').value = colaborador.primeiro_nome || '';
+        document.getElementById('ultimo_nome').value = colaborador.ultimo_nome || '';
+        document.getElementById('email').value = colaborador.email || '';
+        document.getElementById('numero_contato').value = colaborador.numero_contato || '';
+        document.getElementById('nome_usuario').value = colaborador.nome_usuario || '';
+        document.getElementById('senha').value = colaborador.senha || '';
+        document.getElementById('foto').value = colaborador.foto || '';
+
+      } catch (error) {
+        console.error("Erro ao carregar colaborador:", error);
+        alert("Erro ao carregar colaborador.");
+      }
+    }
+
+    document.getElementById('form-edicao').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('id').value;
+
+      const dadosAtualizados = {
+        primeiro_nome: document.getElementById('primeiro_nome').value,
+        ultimo_nome: document.getElementById('ultimo_nome').value,
+        email: document.getElementById('email').value,
+        numero_contato: document.getElementById('numero_contato').value,
+        nome_usuario: document.getElementById('nome_usuario').value,
+        senha: document.getElementById('senha').value,
+        foto: document.getElementById('foto').value
+      };
+
+      try {
+        const res = await fetch(`http://localhost:4000/api/colaboradores/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dadosAtualizados)
+        });
+
+        if (res.ok) {
+          alert("Colaborador atualizado com sucesso!");
+          window.location.href = "visualizar-perfil.html";
+        } else {
+          alert("Erro ao atualizar colaborador.");
+        }
+
+      } catch (error) {
+        console.error("Erro ao atualizar:", error);
+        alert("Erro ao atualizar colaborador.");
+      }
+    });
+
+    carregarDados();
+  </script>
+
+</body>
+</html>
