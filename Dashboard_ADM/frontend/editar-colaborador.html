@@ -60,7 +60,7 @@
 
     async function carregarDetalhes() {
       try {
-        const res = await fetch(`http://localhost:4000/api/colaboradores/${id}`);
+        const res = await fetch(`http://localhost:3000/api/colaboradores/${id}`);
         const c = await res.json();
 
         const numeroLimpo = (c.numero_contato || '').replace(/\D/g, '');
@@ -89,7 +89,7 @@
 
     function excluirColaborador(id) {
       if (confirm('Tem certeza que deseja excluir este colaborador?')) {
-        fetch(`http://localhost:4000/api/colaboradores/${id}`, {
+        fetch(`http://localhost:3000/api/colaboradores/${id}`, {
           method: 'DELETE'
         })
         .then(res => res.json())
